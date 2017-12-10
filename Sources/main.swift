@@ -23,5 +23,14 @@ router.get("hello") {request, response, next in
 //     try response.end()
 // }
 
-Kitura.addHTTPServer(onPort:8090, with: router)
+// Resolve the port that we want the server to listen on.
+let port: Int
+let defaultPort = 8080
+if let requestedPort = ProcessInfo.processInfo.environment["PORT"] {
+    port = Int(requestedPort) ?? defaultPort
+} else {
+    port = defaultPort
+}
+
+Kitura.addHTTPServer(onPort:port, with: router)
 Kitura.run()
